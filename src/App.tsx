@@ -67,6 +67,22 @@ const [showUserMenu, setShowUserMenu] = useState(false);
       const path = location.pathname;
       const search = new URLSearchParams(location.search);
       
+      // --- NEW /@USER REDIRECT LOGIC ---
+      // Matches /@username or /@username/some/path
+      const atUserMatch = path.match(/^\/@([^/]+)(?:\/(.*))?$/);
+      if (atUserMatch) {
+        const username = atUserMatch[1];
+        const restPath = atUserMatch[2] || '';
+        
+        // Append existing search params if there are any, or just use the user param
+        search.set('user', username);
+        const newUrl = `/${restPath}?${search.toString()}`;
+        
+        navigate(newUrl, { replace: true });
+        return; // Stop further execution while React Router handles the redirect
+      }
+      // ---------------------------------
+
       const pathInviteMatch = path.match(/^\/invite\/([a-zA-Z0-9-]{3,20})$/);
       const queryInvite = search.get('invite');
       const inviteCode = pathInviteMatch ? pathInviteMatch[1] : queryInvite;
