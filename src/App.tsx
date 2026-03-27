@@ -87,6 +87,10 @@ const [showUserMenu, setShowUserMenu] = useState(false);
         navigate('/', { replace: true });
         return;
       }
+	  if (path === '/home') {
+        navigate('/', { replace: true });
+        return;
+      }
 
       const pathInviteMatch = path.match(/^\/invite\/([a-zA-Z0-9-]{3,20})$/);
       const queryInvite = search.get('invite');
@@ -193,7 +197,7 @@ const [showUserMenu, setShowUserMenu] = useState(false);
         const rawSlug = slugMatch[1];
         const slug = decodeURIComponent(rawSlug);
 
-        if (!['user', 'app', 'invite', 'gazebo', 'message', 'stats', 'settings','communities'].includes(rawSlug.toLowerCase())) {
+        if (!['user', 'app', 'home', 'invite', 'gazebo', 'message', 'stats', 'settings','communities'].includes(rawSlug.toLowerCase())) {
           const { data: profileData } = await supabase
             .from('profiles')
             .select('id')
